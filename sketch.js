@@ -30,14 +30,6 @@ function setup() {
 }
 
 function draw() {
-  clear(); // очищает canvas
-
-  // Рисуем белую подложку
-  fill(255, 200); // белый с небольшой прозрачностью (240 из 255)
-  noStroke();
-  rectMode(CENTER);
-  rect(width / 2, height / 2, 500, 900, 20); // x, y, ширина, высота, скругление
-
   fill(0);
   textSize(28);
   // Перенос текста по 4 слова
