@@ -40,7 +40,7 @@ function draw() {
   fill(255, 200); // белый с небольшой прозрачностью (240 из 255)
   noStroke();
   rectMode(CENTER);
-  rect(width / 2, height / 2, 500, 900, 20); // x, y, ширина, высота, скругление
+  rect(width / 2, height / 2, 500, 1000, 20); // x, y, ширина, высота, скругление
 
   fill(0);
   textSize(28);
