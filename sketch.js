@@ -1,59 +1,73 @@
 let table;
 let numRows;
 let correctAnswer;
-let buttons = [];
-let nextButton;
-let message = "";
 
 function preload() {
   table = loadTable('trans.csv', 'csv', 'header');
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  textAlign(CENTER, CENTER);
-  textSize(24);
+  noCanvas(); // не нужен
   numRows = table.getRowCount();
 
-  nextButton = createButton("Next word");
-  nextButton.addClass("next-button");
-  nextButton.position((windowWidth - 120) / 2, height - 80); // Центрируем по ширине
-  nextButton.mousePressed(generateQuestion);
-  nextButton.hide();
-
+  document.getElementById('next-button').addEventListener('click', generateQuestion);
   generateQuestion();
 }
 
-function draw() {
-  background();
-  fill(0);
-  textSize(28);
+function generateQuestion() {
+  const message = document.getElementById('message');
+  const answers = document.getElementById('answers');
+  const questionWord = document.getElementById('question-word');
+  const nextButton = document.getElementById('next-button');
 
-  // Перенос текста по 4 слова в строке
-  let instruction = "Choose the correct translation for the following word:";
-  let words = instruction.split(" ");
-  let maxWordsPerLine = 4;
-  let lines = [];
+  message.textContent = '';
+  answers.innerHTML = '';
+  nextButton.style.display = 'none';
 
-  for (let i = 0; i < words.length; i += maxWordsPerLine) {
-    lines.push(words.slice(i, i + maxWordsPerLine).join(" "));
+  let validRows = [];
+  for (let i = 0; i < numRows; i++) {
+    let eng = table.getString(i, 2);
+    let rus = table.getString(i, 3);
+    if (eng && rus) validRows.push({ eng, rus });
   }
 
-  for (let i = 0; i < lines.length; i++) {
-    text(lines[i], width / 2, 30 + i * 30);
+  let rnd = int(random(validRows.length));
+  let selected = validRows[rnd];
+  correctAnswer = selected;
+
+  questionWord.textContent = selected.eng;
+
+  let wrongAnswers = [];
+  while (wrongAnswers.length < 2) {
+    let wrong = validRows[int(random(validRows.length))].rus;
+    if (wrong !== selected.rus && !wrongAnswers.includes(wrong)) {
+      wrongAnswers.push(wrong);
+    }
   }
 
-  if (correctAnswer) {
-    fill(20, 30, 180);
-    textSize(36);
-    text(correctAnswer.question, width / 2, 150);
+  let options = shuffle([selected.rus, ...wrongAnswers]);
+
+  options.forEach(opt => {
+    let btn = createButton(opt);
+    btn.parent('answers');
+    btn.mousePressed(() => checkAnswer(btn, opt));
+  });
+}
+
+function checkAnswer(button, selected) {
+  const buttons = document.querySelectorAll('#answers button');
+  const message = document.getElementById('message');
+  const nextButton = document.getElementById('next-button');
+
+  buttons.forEach(b => b.attribute('disabled', ''));
+
+  if (selected === correctAnswer.rus) {
+    button.style('background-color', '#4CAF50');
+    message.textContent = 'Correct!';
+  } else {
+    button.style('background-color', '#F44336');
+    message.innerHTML = `Wrong! Correct translation: <span style="color:#4CAF50">${correctAnswer.rus}</span>`;
   }
 
-  if (message) {
-    textSize(22);
-    if (message.startsWith("Wrong!")) {
-      let parts = message.split(": ");
-      fill(0);
-      text(parts[0] + ":", width / 2, height - 140);
-      fill('#4CAF50'); // зелёный для правильного слова
-      text(parts
+  nextButton.style.display = 'inline-block';
+}
