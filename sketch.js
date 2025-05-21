@@ -7,7 +7,7 @@ function preload() {
 }
 
 function setup() {
-  noCanvas(); // не нужен
+  noCanvas(); // canvas не нужен
   numRows = table.getRowCount();
 
   document.getElementById('next-button').addEventListener('click', generateQuestion);
@@ -15,58 +15,64 @@ function setup() {
 }
 
 function generateQuestion() {
+  const question = document.getElementById('question-word');
+  const answersDiv = document.getElementById('answers');
   const message = document.getElementById('message');
-  const answers = document.getElementById('answers');
-  const questionWord = document.getElementById('question-word');
   const nextButton = document.getElementById('next-button');
 
   message.textContent = '';
-  answers.innerHTML = '';
+  answersDiv.innerHTML = '';
   nextButton.style.display = 'none';
 
+  // Собираем все строки с валидными словами
   let validRows = [];
   for (let i = 0; i < numRows; i++) {
     let eng = table.getString(i, 2);
     let rus = table.getString(i, 3);
-    if (eng && rus) validRows.push({ eng, rus });
-  }
-
-  let rnd = int(random(validRows.length));
-  let selected = validRows[rnd];
-  correctAnswer = selected;
-
-  questionWord.textContent = selected.eng;
-
-  let wrongAnswers = [];
-  while (wrongAnswers.length < 2) {
-    let wrong = validRows[int(random(validRows.length))].rus;
-    if (wrong !== selected.rus && !wrongAnswers.includes(wrong)) {
-      wrongAnswers.push(wrong);
+    if (eng && rus) {
+      validRows.push({ eng, rus });
     }
   }
 
+  // Выбираем случайный вопрос
+  let rndIndex = int(random(validRows.length));
+  let selected = validRows[rndIndex];
+  correctAnswer = selected;
+
+  question.textContent = selected.eng;
+
+  // Выбираем 2 случайных неправильных ответа
+  let wrongAnswers = [];
+  while (wrongAnswers.length < 2) {
+    let candidate = validRows[int(random(validRows.length))].rus;
+    if (candidate !== selected.rus && !wrongAnswers.includes(candidate)) {
+      wrongAnswers.push(candidate);
+    }
+  }
+
+  // Смешиваем правильный и неправильные
   let options = shuffle([selected.rus, ...wrongAnswers]);
 
   options.forEach(opt => {
     let btn = createButton(opt);
-    btn.parent('answers');
+    btn.parent(answersDiv);
     btn.mousePressed(() => checkAnswer(btn, opt));
   });
 }
 
 function checkAnswer(button, selected) {
-  const buttons = document.querySelectorAll('#answers button');
+  const allButtons = document.querySelectorAll('#answers button');
   const message = document.getElementById('message');
   const nextButton = document.getElementById('next-button');
 
-  buttons.forEach(b => b.attribute('disabled', ''));
+  allButtons.forEach(b => b.attribute('disabled', ''));
 
   if (selected === correctAnswer.rus) {
     button.style('background-color', '#4CAF50');
     message.textContent = 'Correct!';
   } else {
     button.style('background-color', '#F44336');
-    message.innerHTML = `Wrong! Correct translation: <span style="color:#4CAF50">${correctAnswer.rus}</span>`;
+    message.innerHTML = `Wrong! Correct answer: <span style="color:#4CAF50">${correctAnswer.rus}</span>`;
   }
 
   nextButton.style.display = 'inline-block';
