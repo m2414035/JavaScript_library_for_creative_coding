@@ -2,26 +2,64 @@ body {
   margin: 0;
   padding: 0;
   background-image: url("background.jpg");
-  background-size: cover;          /* Растягивает по размеру окна */
-  background-position: center;     /* Центрует */
-  background-repeat: no-repeat;    /* Без повторов */
-  background-attachment: fixed;    /* Фиксирует при прокрутке (по желанию) */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: 'PT Sans', sans-serif;
-  height: 100vh;                   /* Гарантирует 100% высоту */
-  width: 100vw;                    /* Гарантирует 100% ширину */
-  overflow: hidden;                /* Убирает полосы прокрутки */
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
+/* Центрированный контейнер */
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 5vw;
+  border-radius: 15px;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+/* Заголовок и инструкция */
+#instruction {
+  font-size: clamp(16px, 3vw, 20px);
+  margin-bottom: 20px;
+}
+
+#question-word {
+  font-size: clamp(24px, 4vw, 32px);
+  color: #1420b4;
+  margin-bottom: 30px;
+}
+
+/* Кнопки */
+button.next-button,
+button.answer-button {
+  width: 100%;
+  padding: 1em;
+  font-size: clamp(14px, 2.5vw, 18px);
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-family: 'PT Sans', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+/* Отдельные стили для кнопок */
 button.next-button {
   background-color: #2196F3;
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-family: 'PT Sans', sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 button.next-button:hover {
@@ -30,14 +68,22 @@ button.next-button:hover {
 
 button.answer-button {
   background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 18px;
-  font-family: 'PT Sans', sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 button.answer-button:hover {
   background-color: #e0f7fa;
+}
+
+/* Сообщение о результате */
+#message {
+  margin-top: 20px;
+  font-size: clamp(16px, 3vw, 20px);
+}
+
+/* Медиа-запрос для мелких экранов */
+@media (max-height: 500px) {
+  .container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }
