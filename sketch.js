@@ -11,11 +11,7 @@ function preload() {
 
 function setup() {
   // Создаём canvas и помещаем его под HTML
-  let cnv = createCanvas(windowWidth, windowHeight);
-  cnv.style('position', 'absolute');
-  cnv.style('top', '0');
-  cnv.style('left', '0');
-  cnv.style('z-index', '-1'); // отправляем canvas под фон
+  noCanvas(); // отключает canvas
 
   textAlign(CENTER, CENTER);
   textSize(24);
