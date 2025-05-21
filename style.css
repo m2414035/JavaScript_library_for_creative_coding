@@ -16,19 +16,19 @@ body {
   box-sizing: border-box;
 }
 
-/* Центрированный контейнер */
+/* БЕЛАЯ ПОДЛОЖКА */
 .container {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.92); /* мягкий белый фон с прозрачностью */
   padding: 5vw;
-  border-radius: 15px;
+  border-radius: 20px;
   text-align: center;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
 }
 
-/* Заголовок и инструкция */
+/* Остальные элементы внутри */
 #instruction {
   font-size: clamp(16px, 3vw, 20px);
   margin-bottom: 20px;
@@ -40,9 +40,8 @@ body {
   margin-bottom: 30px;
 }
 
-/* Кнопки */
-button.next-button,
-button.answer-button {
+#answers button,
+#next-button {
   width: 100%;
   padding: 1em;
   font-size: clamp(14px, 2.5vw, 18px);
@@ -55,32 +54,30 @@ button.answer-button {
   box-sizing: border-box;
 }
 
-/* Отдельные стили для кнопок */
-button.next-button {
+#next-button {
   background-color: #2196F3;
   color: white;
   border: none;
 }
 
-button.next-button:hover {
+#next-button:hover {
   background-color: #1976D2;
 }
 
-button.answer-button {
+#answers button {
   background-color: #f9f9f9;
 }
 
-button.answer-button:hover {
+#answers button:hover {
   background-color: #e0f7fa;
 }
 
-/* Сообщение о результате */
 #message {
   margin-top: 20px;
   font-size: clamp(16px, 3vw, 20px);
 }
 
-/* Медиа-запрос для мелких экранов */
+/* Поддержка очень низких экранов */
 @media (max-height: 500px) {
   .container {
     max-height: 90vh;
